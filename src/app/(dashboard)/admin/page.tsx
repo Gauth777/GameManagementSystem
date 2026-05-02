@@ -17,7 +17,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const isAdmin = (session?.user as Record<string, unknown>)?.role === "ADMIN";
+  const isAdmin = session?.user?.role === "ADMIN";
 
   useEffect(() => {
     if (session && !isAdmin) {

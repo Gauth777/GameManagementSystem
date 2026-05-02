@@ -9,7 +9,7 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { useToast } from "@/hooks/useToast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Swords, Trophy, ChevronDown } from "lucide-react";
-import type { Game, GameMode, Team } from "@/types";
+import type { Game, GameMode, Team, SimulationResult } from "@/types";
 
 export default function SimulatePage() {
   const toast = useToast();
@@ -21,7 +21,7 @@ export default function SimulatePage() {
   const [team1, setTeam1] = useState("");
   const [team2, setTeam2] = useState("");
   const [simulating, setSimulating] = useState(false);
-  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const [result, setResult] = useState<SimulationResult | null>(null);
 
   useEffect(() => {
     fetch("/api/games").then((r) => r.json()).then((d) => setGames(Array.isArray(d) ? d : d.data || []));
@@ -126,20 +126,20 @@ export default function SimulatePage() {
                 <Trophy size={40} className="mx-auto text-primary mb-4" />
                 <h2 className="text-2xl font-heading font-bold text-text mb-2">Match Complete!</h2>
                 <p className="text-lg text-primary font-heading font-bold">
-                  Winner: {(result as Record<string, unknown>).winner as string}
+                  Winner: {result.winner}
                 </p>
                 <div className="flex items-center justify-center gap-6 mt-4">
                   <div className="text-center">
                     <p className="text-sm text-text-muted">Team 1 Score</p>
                     <p className="text-xl font-heading font-bold text-accent">
-                      {((result as Record<string, Record<string, unknown>>).team1?.totalScore as number) || 0}
+                      {result.team1?.totalScore || 0}
                     </p>
                   </div>
                   <Swords size={24} className="text-text-muted" />
                   <div className="text-center">
                     <p className="text-sm text-text-muted">Team 2 Score</p>
                     <p className="text-xl font-heading font-bold text-accent-2">
-                      {((result as Record<string, Record<string, unknown>>).team2?.totalScore as number) || 0}
+                      {result.team2?.totalScore || 0}
                     </p>
                   </div>
                 </div>
